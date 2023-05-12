@@ -28,11 +28,23 @@ const App = () => {
 
 
   // Add Task
-  const addTask = (task) => {
+  const addTask = async (task) => {
+    const res = await fetch('http://localhost:5000/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    })
+
+    //Data that is returned is the new task that was added
+    const data = await res.json()
+
+    setTasks([...tasks, data])
     //Since we dont have a backend to create an id on its own
-    const id = Math.floor(Math.random() * 10000) + 1;
-    const newTask = { id, ...task };
-    setTasks([...tasks, newTask]);
+    // const id = Math.floor(Math.random() * 10000) + 1;
+    // const newTask = { id, ...task };
+    // setTasks([...tasks, newTask]);
   }
 
   // Delete Task
@@ -40,7 +52,7 @@ const App = () => {
     await fetch(`http://localhost:5000/tasks/${id}`, {
       method: 'DELETE'
     })
-    
+    //Before server data
     console.log('delete', id);
     setTasks(tasks.filter((task) => task.id !==id));
   }
