@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Tasks } from './components/Tasks';
 import { AddTask } from './components/AddTask';
-import { async } from 'q';
 
 const App = () => {
   const [showAddTask, setShowAddTask] = useState(false);
@@ -13,7 +12,7 @@ const App = () => {
       const tasksFromServer = await fetchTasks()
       setTasks(tasksFromServer)
     }
-    
+
     getTasks()
   }, [])
 
@@ -37,7 +36,11 @@ const App = () => {
   }
 
   // Delete Task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE'
+    })
+    
     console.log('delete', id);
     setTasks(tasks.filter((task) => task.id !==id));
   }
