@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Button } from './Button';
 
 export const TaskDetails = () => {
     const [loading, setLoading] = useState(true);
@@ -32,6 +33,9 @@ export const TaskDetails = () => {
         <div>
             <h3>{task.text}</h3>
             <p>{task.day}</p>
+            <Button onClick={() => {
+                navigate(-1)
+            }} text='Go Back'/>
         </div>
     )
 
