@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export const TaskDetails = () => {
     const [loading, setLoading] = useState(true);
@@ -7,11 +7,16 @@ export const TaskDetails = () => {
     const [error,  setError] = useState(null)
 
     const params = useParams()
-    
+    const navigate = useNavigate()
+
     useEffect(() => {
         const fetchTask = async () => {
             const res = await fetch(`http://localhost:5000/tasks/${params.id}`)
             const data = await res.json()
+
+            if(res.status === 404) {
+                navigate('/')
+            }
 
             setTask(data)
             setLoading(false)
@@ -19,6 +24,7 @@ export const TaskDetails = () => {
 
         fetchTask()
     })
+
 
     return loading ? (
         <h3>Loading...</h3>
